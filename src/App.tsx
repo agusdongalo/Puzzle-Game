@@ -204,7 +204,7 @@ export default function App() {
     const solvedPattern = solveBoard(board, difficulty.size);
     if (solvedPattern) {
       setSolution(solvedPattern);
-      setSolutionMessage("Press the highlighted switches to clear the panel.");
+      setSolutionMessage("Press the highlighted switches");
     } else {
       setSolution(null);
       setSolutionMessage("No solution for this scramble. Try New Puzzle.");
@@ -218,13 +218,34 @@ export default function App() {
     <div className="workshop">
       <main className="console">
         <header className="header">
-          <div>
+          <div className="header-left">
             <p className="eyebrow">Puzzle Console</p>
             <h1>Gearbox Grid</h1>
             <p className="subtitle">
               Toggle switches to kill every light. Pressing a switch flips itself and its
               neighbors.
             </p>
+            <div className="header-controls">
+              <div className="control-row">
+                <label className="control">
+                  <span>Difficulty</span>
+                  <select
+                    value={difficulty.id}
+                    onChange={(event) => setDifficultyId(event.target.value)}
+                  >
+                    {DIFFICULTIES.map((option) => (
+                      <option key={option.id} value={option.id}>
+                        {option.label}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                <button type="button" className="action solve-button" onClick={handleSolution}>
+                  {showSolution ? "Hide Solution" : "Show Solution"}
+                </button>
+                {solutionMessage ? <p className="hint inline">{solutionMessage}</p> : null}
+              </div>
+            </div>
           </div>
           <div className="stats">
             <div>
@@ -245,26 +266,6 @@ export default function App() {
             </div>
           </div>
         </header>
-
-        <section className="controls">
-          <label className="control">
-            <span>Difficulty</span>
-            <select
-              value={difficulty.id}
-              onChange={(event) => setDifficultyId(event.target.value)}
-            >
-              {DIFFICULTIES.map((option) => (
-                <option key={option.id} value={option.id}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
-          </label>
-          <button type="button" className="action" onClick={handleSolution}>
-            {showSolution ? "Hide Solution" : "Show Solution"}
-          </button>
-          {solutionMessage ? <p className="hint">{solutionMessage}</p> : null}
-        </section>
 
         <section className="board" role="grid" aria-label="Gearbox grid">
           {Array.from({ length: difficulty.size }).map((_, row) => (
