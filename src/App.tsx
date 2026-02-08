@@ -127,6 +127,7 @@ export default function App() {
   const [showSolution, setShowSolution] = useState(false);
   const [solution, setSolution] = useState<Board | null>(null);
   const [solutionMessage, setSolutionMessage] = useState("");
+  const [showWinModal, setShowWinModal] = useState(false);
 
   useEffect(() => {
     const saved = localStorage.getItem(BEST_MOVES_KEY);
@@ -153,11 +154,18 @@ export default function App() {
     setShowSolution(false);
     setSolution(null);
     setSolutionMessage("");
+    setShowWinModal(false);
   }, [difficulty.id, difficulty.size, difficulty.steps]);
 
   const litCount = useMemo(() => board.filter(Boolean).length, [board]);
   const solved = litCount === 0;
   const bestForDifficulty = bestMoves[difficulty.id];
+
+  useEffect(() => {
+    if (solved) {
+      setShowWinModal(true);
+    }
+  }, [solved]);
 
   const handleToggle = (row: number, col: number) => {
     if (solved) return;
@@ -185,6 +193,7 @@ export default function App() {
     setShowSolution(false);
     setSolution(null);
     setSolutionMessage("");
+    setShowWinModal(false);
   };
 
   const handleReset = () => {
@@ -193,6 +202,7 @@ export default function App() {
     setShowSolution(false);
     setSolution(null);
     setSolutionMessage("");
+    setShowWinModal(false);
   };
 
   const handleSolution = () => {
@@ -216,6 +226,89 @@ export default function App() {
 
   return (
     <div className="workshop">
+      {showWinModal ? (
+        <div className="modal-backdrop" role="presentation" onClick={() => setShowWinModal(false)}>
+          <div className="fireworks" aria-hidden="true">
+            <span className="firework f1 cyan" />
+            <span className="firework f2 gold" />
+            <span className="firework f3 violet" />
+            <span className="firework f4 cyan" />
+            <span className="firework f5 gold" />
+            <span className="firework f6 violet" />
+            <span className="firework f7 cyan" />
+            <span className="firework f8 gold" />
+            <span className="firework f9 violet" />
+            <span className="firework f10 cyan" />
+            <span className="firework f11 gold" />
+            <span className="firework f12 violet" />
+            <span className="firework f13 cyan" />
+            <span className="firework f14 gold" />
+            <span className="firework f15 violet" />
+            <span className="firework f16 cyan" />
+            <span className="firework f17 gold" />
+            <span className="firework f18 violet" />
+            <span className="firework f19 cyan" />
+            <span className="firework f20 gold" />
+            <span className="firework f21 violet" />
+            <span className="firework f22 cyan" />
+            <span className="firework f23 gold" />
+            <span className="firework f24 violet" />
+            <span className="spark s1 cyan" />
+            <span className="spark s2 gold" />
+            <span className="spark s3 violet" />
+            <span className="spark s4 cyan" />
+            <span className="spark s5 gold" />
+            <span className="spark s6 violet" />
+            <span className="spark s7 cyan" />
+            <span className="spark s8 gold" />
+            <span className="spark s9 violet" />
+            <span className="spark s10 cyan" />
+            <span className="spark s11 gold" />
+            <span className="spark s12 violet" />
+            <span className="spark s13 cyan" />
+            <span className="spark s14 gold" />
+            <span className="spark s15 violet" />
+            <span className="spark s16 cyan" />
+            <span className="spark s17 gold" />
+            <span className="spark s18 violet" />
+            <span className="spark s19 cyan" />
+            <span className="spark s20 gold" />
+            <span className="spark s21 violet" />
+            <span className="spark s22 cyan" />
+            <span className="spark s23 gold" />
+            <span className="spark s24 violet" />
+            <span className="spark s25 cyan" />
+            <span className="spark s26 gold" />
+            <span className="spark s27 violet" />
+            <span className="spark s28 cyan" />
+            <span className="spark s29 gold" />
+            <span className="spark s30 violet" />
+          </div>
+          <div
+            className="modal"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Puzzle complete"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <div className="modal-content">
+              <p className="modal-eyebrow">System Status</p>
+              <h2>Panel Stabilized</h2>
+              <p className="modal-message">
+                Congratulations! You killed every light and brought the grid back under control.
+              </p>
+              <div className="modal-actions">
+                <button type="button" className="action" onClick={() => setShowWinModal(false)}>
+                  Close
+                </button>
+                <button type="button" className="action primary" onClick={handleNewPuzzle}>
+                  New Puzzle
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      ) : null}
       <main className="console">
         <header className="header">
           <div className="header-left">
